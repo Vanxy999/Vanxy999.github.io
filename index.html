@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Name — Computer Vision Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf9f7;
+    --bg-card: #fff;
+    --text: #1a1916;
+    --text-muted: #6b6960;
+    --text-faint: #a09e97;
+    --accent: #2a5f8f;
+    --accent-light: #e8f0f8;
+    --accent-hover: #1e4a70;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.15);
+    --tag-bg: #f0ede8;
+    --tag-text: #4a4740;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'Instrument Sans', system-ui, sans-serif;
+    --mono: 'DM Mono', monospace;
+    --radius: 10px;
+    --shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141210;
+      --bg-card: #1e1c19;
+      --text: #e8e6e0;
+      --text-muted: #958f85;
+      --text-faint: #5c5850;
+      --accent: #6da4d4;
+      --accent-light: #1a2d3d;
+      --accent-hover: #8fc0e8;
+      --border: rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.14);
+      --tag-bg: #2a2823;
+      --tag-text: #c4c0b8;
+      --shadow: 0 1px 4px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
+    }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Navigation ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 max(1.5rem, calc((100% - 860px) / 2));
+    display: flex; align-items: center; justify-content: space-between;
+    height: 52px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  nav .logo {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex; gap: 0; align-items: center;
+  }
+
+  nav ul li a {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  nav ul li a:hover {
+    color: var(--text);
+    background: var(--tag-bg);
+  }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  section {
+    padding: 4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section:last-child { border-bottom: none; }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 5rem 0 4rem;
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .hero-text h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-text h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .role-line {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .role-line span {
+    color: var(--text-faint);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 13px;
+  }
+
+  .role-line span::before { content: " · "; }
+
+  .hero-bio {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 520px;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-links {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+
+  .hero-links a {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--bg-card);
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+
+  .hero-links a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .hero-links a svg {
+    width: 15px; height: 15px;
+    fill: currentColor; flex-shrink: 0;
+  }
+
+  .hero-photo {
+    position: relative;
+  }
+
+  .photo-frame {
+    width: 164px; height: 164px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--border-strong);
+    background: var(--tag-bg);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .photo-placeholder {
+    font-family: var(--serif);
+    font-size: 52px;
+    font-style: italic;
+    color: var(--text-faint);
+    user-select: none;
+  }
+
+  .photo-frame img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  /* ── Interests tags ── */
+  .interests {
+    margin-top: 1.25rem;
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .tag {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Section headers ── */
+  .section-header {
+    display: flex; align-items: baseline; gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-header h2 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .section-header .count {
+    font-size: 13px;
+    color: var(--text-faint);
+    font-family: var(--mono);
+  }
+
+  /* ── Publications ── */
+  .pub-filters {
+    display: flex; gap: 6px; margin-bottom: 1.75rem; flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .pub-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .pub-item:first-child { padding-top: 0; }
+  .pub-item:last-child { border-bottom: none; }
+
+  .pub-thumb {
+    width: 100px; height: 68px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .pub-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .pub-thumb-placeholder {
+    font-size: 22px;
+    color: var(--text-faint);
+  }
+
+  .pub-venue {
+    display: inline-flex;
+    font-size: 11px;
+    font-family: var(--mono);
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    margin-bottom: 5px;
+  }
+
+  .pub-year {
+    font-size: 11px;
+    color: var(--text-faint);
+    font-family: var(--mono);
+    margin-left: 6px;
+  }
+
+  .pub-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .pub-authors {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .pub-authors strong { color: var(--text); font-weight: 600; }
+
+  .pub-links {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+
+  .pub-links a {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid var(--border-strong);
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--bg-card);
+    transition: color 0.12s, border-color 0.12s;
+  }
+
+  .pub-links a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .pub-badge {
+    display: inline-flex;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+  }
+
+  .badge-oral { background: #fff3e0; color: #b45309; }
+  .badge-best { background: #fce7f3; color: #9d174d; }
+
+  /* ── Experience ── */
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .exp-item:last-child { border-bottom: none; }
+
+  .exp-period {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text-faint);
+    padding-top: 3px;
+    line-height: 1.4;
+  }
+
+  .exp-org {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+
+  .exp-role {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .exp-desc {
+    font-size: 13px;
+    color: var(--text-faint);
+    line-height: 1.6;
+  }
+
+  /* ── News ── */
+  .news-list { display: flex; flex-direction: column; gap: 0; }
+
+  .news-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+
+  .news-item:last-child { border-bottom: none; }
+
+  .news-date {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text-faint);
+  }
+
+  .news-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .news-text a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .news-text a:hover { text-decoration: underline; }
+
+  /* ── Footer ── */
+  footer {
+    padding: 2rem 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-faint);
+    font-family: var(--mono);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── Analytics ── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .metric-card {
+    background: var(--tag-bg);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+
+  .metric-card .m-label {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  .metric-card .m-val {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .metric-card .m-sub {
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 5px;
+  }
+
+  .metric-card .m-sub.up { color: #3B6D11; }
+
+  @media (prefers-color-scheme: dark) {
+    .metric-card .m-sub.up { color: #97C459; }
+  }
+
+  .charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .analytics-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+
+  .analytics-card .a-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .chart-legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .chart-legend i {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .bottom-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .bar-row:last-child { border-bottom: none; }
+
+  .bar-label { color: var(--text-muted); flex-shrink: 0; min-width: 110px; }
+
+  .bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--tag-bg);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+
+  .bar-count {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text-faint);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .sec-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .sec-row:last-child { border-bottom: none; }
+  .sec-name { color: var(--text-muted); }
+  .sec-pct { font-size: 12px; font-family: var(--mono); color: var(--text-faint); }
+
+  @media (max-width: 640px) {
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .charts-row { grid-template-columns: 1fr; }
+    .bottom-charts { grid-template-columns: 1fr; }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 3rem 0 2.5rem;
+    }
+
+    .hero-photo { display: flex; justify-content: flex-start; }
+    .photo-frame { width: 110px; height: 110px; }
+
+    nav ul { display: none; }
+
+    .pub-item { grid-template-columns: 1fr; }
+    .pub-thumb { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a class="logo" href="#">Your Name</a>
+  <ul>
+    <li><a href="#news">News</a></li>
+    <li><a href="#publications">Papers</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#analytics">Analytics</a></li>
+    <li><a href="mailto:you@university.edu">Email</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<div class="container">
+  <header class="hero">
+    <div class="hero-text">
+      <p class="role-line">
+        Ph.D. Student
+        <span>University Name · Lab Name</span>
+      </p>
+      <h1>Your <em>Name</em></h1>
+      <p class="hero-bio">
+        I work on <strong>3D scene understanding</strong> and <strong>generative models for visual perception</strong>.
+        My research aims to bridge the gap between 2D image observations and 3D world representations,
+        with applications in robotics and embodied AI.
+        Previously at [Company/Institution]. Advised by <a href="#" style="color:var(--accent);text-decoration:none;">Prof. Advisor</a>.
+      </p>
+      <div class="hero-links">
+        <!-- Google Scholar -->
+        <a href="https://scholar.google.com" target="_blank">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+          Google Scholar
+        </a>
+        <!-- GitHub -->
+        <a href="https://github.com" target="_blank">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          GitHub
+        </a>
+        <!-- Twitter/X -->
+        <a href="https://twitter.com" target="_blank">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.735-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Twitter / X
+        </a>
+        <!-- CV -->
+        <a href="cv.pdf" target="_blank">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 4h5v5a2 2 0 0 0 2 2h5v9H6V4zm2 9h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
+          Curriculum Vitae
+        </a>
+      </div>
+
+      <div class="interests">
+        <span class="tag">3D Scene Understanding</span>
+        <span class="tag">Generative Models</span>
+        <span class="tag">Neural Radiance Fields</span>
+        <span class="tag">Embodied AI</span>
+        <span class="tag">Video Understanding</span>
+      </div>
+    </div>
+
+    <div class="hero-photo">
+      <div class="photo-frame">
+        <!-- Replace with: <img src="photo.jpg" alt="Your Name"> -->
+        <span class="photo-placeholder">YN</span>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- News -->
+<section id="news">
+  <div class="container">
+    <div class="section-header">
+      <h2>News</h2>
+      <span class="count">/ recent</span>
+    </div>
+    <div class="news-list">
+      <div class="news-item">
+        <span class="news-date">May 2025</span>
+        <p class="news-text">One paper accepted to <a href="#">CVPR 2025</a>. See you in Nashville!</p>
+      </div>
+      <div class="news-item">
+        <span class="news-date">Mar 2025</span>
+        <p class="news-text">Started research internship at <a href="#">DeepMind</a> working on world models.</p>
+      </div>
+      <div class="news-item">
+        <span class="news-date">Jan 2025</span>
+        <p class="news-text">Two papers accepted to <a href="#">ICLR 2025</a> (one oral, one poster).</p>
+      </div>
+      <div class="news-item">
+        <span class="news-date">Sep 2024</span>
+        <p class="news-text">Joined <a href="#">University Lab</a> as a Ph.D. student.</p>
+      </div>
+      <div class="news-item">
+        <span class="news-date">Jul 2024</span>
+        <p class="news-text">Paper accepted to <a href="#">ECCV 2024</a> — <a href="#">SceneFlow++</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Publications -->
+<section id="publications">
+  <div class="container">
+    <div class="section-header">
+      <h2>Publications</h2>
+      <span class="count">/ selected</span>
+    </div>
+
+    <div class="pub-filters">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">3D Vision</button>
+      <button class="filter-btn">Generative</button>
+      <button class="filter-btn">Video</button>
+    </div>
+
+    <!-- Paper 1 -->
+    <div class="pub-item">
+      <div class="pub-thumb">
+        <!-- Replace src with teaser image: <img src="papers/paper1_teaser.png" alt=""> -->
+        <span class="pub-thumb-placeholder">🔲</span>
+      </div>
+      <div>
+        <div>
+          <span class="pub-venue">CVPR 2025</span>
+          <span class="pub-year">2025</span>
+          <span class="pub-badge badge-oral">Oral</span>
+        </div>
+        <p class="pub-title">
+          DiffScene: Diffusion-Based 3D Indoor Scene Generation with Layout Priors
+        </p>
+        <p class="pub-authors">
+          <strong>Your Name</strong>, Co-Author One, Co-Author Two, Prof. Advisor
+        </p>
+        <div class="pub-links">
+          <a href="#">Paper</a>
+          <a href="#">Code</a>
+          <a href="#">Project Page</a>
+          <a href="#">Video</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paper 2 -->
+    <div class="pub-item">
+      <div class="pub-thumb">
+        <span class="pub-thumb-placeholder">🔲</span>
+      </div>
+      <div>
+        <div>
+          <span class="pub-venue">ICLR 2025</span>
+          <span class="pub-year">2025</span>
+        </div>
+        <p class="pub-title">
+          TokenField: Unified Tokenization for 3D Radiance Field Synthesis
+        </p>
+        <p class="pub-authors">
+          Co-Author One, <strong>Your Name</strong>, Co-Author Three, Prof. Advisor
+        </p>
+        <div class="pub-links">
+          <a href="#">Paper</a>
+          <a href="#">Code</a>
+          <a href="#">Demo</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paper 3 -->
+    <div class="pub-item">
+      <div class="pub-thumb">
+        <span class="pub-thumb-placeholder">🔲</span>
+      </div>
+      <div>
+        <div>
+          <span class="pub-venue">ECCV 2024</span>
+          <span class="pub-year">2024</span>
+          <span class="pub-badge badge-best">Best Paper Nominee</span>
+        </div>
+        <p class="pub-title">
+          SceneFlow++: Robust and Generalizable 4D Scene Flow Estimation
+        </p>
+        <p class="pub-authors">
+          <strong>Your Name</strong>, Co-Author Two, Co-Author Four
+        </p>
+        <div class="pub-links">
+          <a href="#">Paper</a>
+          <a href="#">Code</a>
+          <a href="#">Project Page</a>
+          <a href="#">Slides</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paper 4 -->
+    <div class="pub-item">
+      <div class="pub-thumb">
+        <span class="pub-thumb-placeholder">🔲</span>
+      </div>
+      <div>
+        <div>
+          <span class="pub-venue">NeurIPS 2023</span>
+          <span class="pub-year">2023</span>
+        </div>
+        <p class="pub-title">
+          Geometry-Aware Masked Autoencoders for 3D-Consistent Representation Learning
+        </p>
+        <p class="pub-authors">
+          Co-Author One, <strong>Your Name</strong>, Co-Author Five, Prof. Advisor
+        </p>
+        <div class="pub-links">
+          <a href="#">Paper</a>
+          <a href="#">Code</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Experience -->
+<section id="experience">
+  <div class="container">
+    <div class="section-header">
+      <h2>Experience</h2>
+    </div>
+
+    <div class="exp-list">
+
+      <div class="exp-item">
+        <div class="exp-period">2025<br>Summer</div>
+        <div>
+          <p class="exp-org">Google DeepMind</p>
+          <p class="exp-role">Research Intern · London, UK</p>
+          <p class="exp-desc">Working on world models for robotic manipulation. Mentor: Dr. Someone.</p>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-period">2024 –<br>Present</div>
+        <div>
+          <p class="exp-org">University of Somewhere</p>
+          <p class="exp-role">Ph.D. Student · Vision & Learning Lab</p>
+          <p class="exp-desc">Advised by Prof. Advisor. Research focus: 3D scene generation and understanding.</p>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-period">2023<br>Summer</div>
+        <div>
+          <p class="exp-org">Bytedance Research</p>
+          <p class="exp-role">Research Intern · Beijing, China</p>
+          <p class="exp-desc">Worked on video generation and temporal consistency in diffusion models.</p>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-period">2020 –<br>2024</div>
+        <div>
+          <p class="exp-org">University of Somewhere (B.Eng.)</p>
+          <p class="exp-role">Computer Science and Technology</p>
+          <p class="exp-desc">GPA: 3.9 / 4.0 · Thesis: Efficient NeRF for Indoor Scene Reconstruction</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="analytics">
+  <div class="container">
+    <div class="section-header">
+      <h2>Site Analytics</h2>
+      <span class="count">/ last 30 days</span>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <p class="m-label">Total visits</p>
+        <p class="m-val">12,847</p>
+        <p class="m-sub up">+18% this month</p>
+      </div>
+      <div class="metric-card">
+        <p class="m-label">Unique visitors</p>
+        <p class="m-val">8,302</p>
+        <p class="m-sub up">+12%</p>
+      </div>
+      <div class="metric-card">
+        <p class="m-label">Paper clicks</p>
+        <p class="m-val">3,561</p>
+        <p class="m-sub up">+31%</p>
+      </div>
+      <div class="metric-card">
+        <p class="m-label">Avg. time on page</p>
+        <p class="m-val">2:34</p>
+        <p class="m-sub">–8s vs last month</p>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="analytics-card">
+        <p class="a-title">Daily visits — last 30 days</p>
+        <div class="chart-legend">
+          <span><i style="background:#2a5f8f"></i>Visits</span>
+          <span><i style="background:#1D9E75; border-top: 2px dashed #1D9E75; background:transparent; height:0; width:14px; border-radius:0;"></i>Unique</span>
+        </div>
+        <div style="position:relative; width:100%; height:200px;">
+          <canvas id="analyticsLine" role="img" aria-label="Line chart: daily visits over 30 days ranging from 290 to 640">Daily visit counts over the past 30 days.</canvas>
+        </div>
+      </div>
+      <div class="analytics-card">
+        <p class="a-title">Traffic source</p>
+        <div style="position:relative; width:100%; height:150px;">
+          <canvas id="analyticsDoughnut" role="img" aria-label="Doughnut: Google Scholar 42%, Direct 28%, Twitter 18%, GitHub 12%">Traffic source breakdown.</canvas>
+        </div>
+        <div class="chart-legend" style="margin-top:14px; margin-bottom:0; flex-direction:column; gap:6px;">
+          <span><i style="background:#2a5f8f"></i>Google Scholar 42%</span>
+          <span><i style="background:#1D9E75"></i>Direct 28%</span>
+          <span><i style="background:#D85A30"></i>Twitter / X 18%</span>
+          <span><i style="background:#888780"></i>GitHub 12%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-charts">
+      <div class="analytics-card">
+        <p class="a-title">Top countries</p>
+        <div class="bar-row">
+          <span class="bar-label">China</span>
+          <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+          <span class="bar-count">3,842</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">United States</span>
+          <div class="bar-track"><div class="bar-fill" style="width:62%"></div></div>
+          <span class="bar-count">2,901</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">United Kingdom</span>
+          <div class="bar-track"><div class="bar-fill" style="width:34%"></div></div>
+          <span class="bar-count">1,421</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Germany</span>
+          <div class="bar-track"><div class="bar-fill" style="width:22%"></div></div>
+          <span class="bar-count">876</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Japan</span>
+          <div class="bar-track"><div class="bar-fill" style="width:16%"></div></div>
+          <span class="bar-count">614</span>
+        </div>
+      </div>
+
+      <div class="analytics-card">
+        <p class="a-title">Most visited sections</p>
+        <div class="sec-row"><span class="sec-name">Publications</span><span class="sec-pct">41%</span></div>
+        <div class="sec-row"><span class="sec-name">Home / About</span><span class="sec-pct">33%</span></div>
+        <div class="sec-row"><span class="sec-name">CV Download</span><span class="sec-pct">12%</span></div>
+        <div class="sec-row"><span class="sec-name">Experience</span><span class="sec-pct">9%</span></div>
+        <div class="sec-row"><span class="sec-name">News</span><span class="sec-pct">5%</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Last updated May 2025 · Your Name · Built with HTML
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const gridColor = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
+  const tickColor = isDark ? '#5c5850' : '#a09e97';
+
+  const days = Array.from({length: 30}, (_, i) => {
+    const d = new Date(2026, 4, 25);
+    d.setDate(d.getDate() - (29 - i));
+    return (d.getMonth() + 1) + '/' + d.getDate();
+  });
+
+  const visits = [320,290,380,410,350,480,520,390,310,440,570,480,360,420,500,610,530,450,390,480,560,620,540,470,410,500,580,640,590,520];
+  const unique  = [210,185,250,270,230,310,340,250,200,285,370,310,235,275,330,400,345,295,255,310,365,405,350,305,268,325,375,415,385,340];
+
+  new Chart(document.getElementById('analyticsLine'), {
+    type: 'line',
+    data: {
+      labels: days,
+      datasets: [
+        {
+          label: 'Visits',
+          data: visits,
+          borderColor: '#2a5f8f',
+          backgroundColor: 'rgba(42,95,143,0.07)',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: true,
+          tension: 0.4,
+        },
+        {
+          label: 'Unique',
+          data: unique,
+          borderColor: '#1D9E75',
+          backgroundColor: 'rgba(29,158,117,0.05)',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: true,
+          tension: 0.4,
+          borderDash: [5, 3],
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      scales: {
+        x: {
+          ticks: { color: tickColor, font: { size: 10 }, maxTicksLimit: 8, autoSkip: true },
+          grid: { color: gridColor },
+          border: { display: false }
+        },
+        y: {
+          ticks: { color: tickColor, font: { size: 10 }, maxTicksLimit: 5 },
+          grid: { color: gridColor },
+          border: { display: false }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('analyticsDoughnut'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Google Scholar', 'Direct', 'Twitter', 'GitHub'],
+      datasets: [{
+        data: [42, 28, 18, 12],
+        backgroundColor: ['#2a5f8f', '#1D9E75', '#D85A30', '#888780'],
+        borderWidth: 0,
+        hoverOffset: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: { legend: { display: false } }
+    }
+  });
+</script>
+</body>
+</html>
