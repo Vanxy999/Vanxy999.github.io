@@ -1349,31 +1349,44 @@
 
 <script>
 // ── Visit Tracker ──
+// Strategy: count once per session (tab open/close).
+// Refresh / F5 will NOT increment. Opening a new tab or new browser window will.
 (function() {
   const now      = new Date();
   const todayKey = 'vt_day_' + now.toISOString().slice(0,10);
   const totalKey = 'vt_total';
   const lastKey  = 'vt_last';
   const paperKey = 'vt_papers';
-
-  const total = parseInt(localStorage.getItem(totalKey) || '0') + 1;
-  const today = parseInt(localStorage.getItem(todayKey) || '0') + 1;
-  const prev  = localStorage.getItem(lastKey);
-  const papers= parseInt(localStorage.getItem(paperKey) || '0');
-
-  localStorage.setItem(totalKey, total);
-  localStorage.setItem(todayKey, today);
-  localStorage.setItem(lastKey, now.toISOString());
+  const SESSION_FLAG = 'vt_counted'; // sessionStorage: cleared when tab is closed
 
   const $ = id => document.getElementById(id);
   const fmt = n => n.toLocaleString();
+
+  const papers = parseInt(localStorage.getItem(paperKey) || '0');
+  const prev   = localStorage.getItem(lastKey);
+
+  // Only count if this tab hasn't counted yet (survives refresh, gone on tab close)
+  const alreadyCounted = sessionStorage.getItem(SESSION_FLAG);
+
+  let total = parseInt(localStorage.getItem(totalKey) || '0');
+  let today = parseInt(localStorage.getItem(todayKey) || '0');
+
+  if (!alreadyCounted) {
+    total += 1;
+    today += 1;
+    localStorage.setItem(totalKey, total);
+    localStorage.setItem(todayKey, today);
+    localStorage.setItem(lastKey, now.toISOString());
+    sessionStorage.setItem(SESSION_FLAG, '1');
+  }
 
   if ($('vt-total'))  $('vt-total').textContent  = fmt(total);
   if ($('vt-today'))  $('vt-today').textContent   = fmt(today);
   if ($('vt-papers')) $('vt-papers').textContent  = fmt(papers);
   if ($('vt-last')) {
-    $('vt-last').textContent = prev
-      ? new Date(prev).toLocaleDateString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
+    const ts = alreadyCounted ? localStorage.getItem(lastKey) : prev;
+    $('vt-last').textContent = ts
+      ? new Date(ts).toLocaleDateString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
       : 'First visit!';
   }
 
