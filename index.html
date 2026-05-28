@@ -278,7 +278,7 @@
 
   .pub-item {
     display: grid;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 140px 1fr;
     gap: 1.25rem;
     padding: 1.25rem 0;
     border-bottom: 1px solid var(--border);
@@ -289,7 +289,7 @@
   .pub-item:last-child { border-bottom: none; }
 
   .pub-thumb {
-    width: 100px; height: 68px;
+    width: 140px; height: 95px;
     border-radius: 6px;
     overflow: hidden;
     background: var(--tag-bg);
@@ -622,6 +622,71 @@
     .bottom-charts { grid-template-columns: 1fr; }
   }
 
+  /* ── Awards ── */
+  .award-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1.25rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .award-item:last-child { border-bottom: none; }
+  .award-year {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text-faint);
+    padding-top: 3px;
+  }
+  .award-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .award-org {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ── Visit tracker ── */
+  .visit-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--tag-bg);
+    border-radius: var(--radius);
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .visit-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 64px;
+  }
+  .visit-stat .v-val {
+    font-size: 20px;
+    font-weight: 600;
+    font-family: var(--mono);
+    color: var(--text);
+    line-height: 1;
+  }
+  .visit-stat .v-label {
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.03em;
+    text-align: center;
+  }
+  .visit-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border-strong);
+    flex-shrink: 0;
+  }
+
   /* ── Responsive ── */
   @media (max-width: 640px) {
     .hero {
@@ -651,6 +716,7 @@
     <li><a href="#news">News</a></li>
     <li><a href="#publications">Papers</a></li>
     <li><a href="#experience">Education</a></li>
+    <li><a href="#awards">Awards</a></li>
     <li><a href="mailto:xiayu1024@whu.edu.cn">xiayu1024@whu.edu.cn</a></li>
   </ul>
 </nav>
@@ -808,7 +874,7 @@
       <div class="exp-item">
         <div class="exp-period">2024 –<br>Present</div>
         <div style="display:flex; align-items:flex-start; gap:14px;">
-          <div style="flex-shrink:0; width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:6px; border:1px solid rgba(0,0,0,0.1); padding:3px;"><svg style="width:36px;height:36px;flex-shrink:0;"    data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430.6294 430.6294">
+          <div style="flex-shrink:0; width:56px; height:56px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:8px; border:1px solid rgba(0,0,0,0.1); padding:4px;"><svg style="width:48px;height:48px;flex-shrink:0;"    data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430.6294 430.6294">
     <g data-name="图层 1">
       <g>
         <path d="m215.3088,0C96.398,0,0,96.398,0,215.3089s96.398,215.3205,215.3088,215.3205,215.3206-96.4097,215.3206-215.3205S334.2314,0,215.3088,0Z" fill="#115740" stroke-width="0"/>
@@ -910,7 +976,7 @@
       <div class="exp-item">
         <div class="exp-period">2021 –<br>2024</div>
         <div style="display:flex; align-items:flex-start; gap:14px;">
-          <div style="flex-shrink:0; width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:6px; border:1px solid rgba(0,0,0,0.1); padding:3px;"><svg style="width:36px;height:36px;flex-shrink:0;"   viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div style="flex-shrink:0; width:56px; height:56px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:8px; border:1px solid rgba(0,0,0,0.1); padding:4px;"><svg style="width:48px;height:48px;flex-shrink:0;"   viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M10.6916 51.208C10.5382 50.6596 10.4814 50.6091 9.83424 50.7268L7.19506 51.2017C6.28101 51.3698 5.6065 51.3803 4.95931 50.8487C4.65463 50.6091 4.45711 50.336 4.34154 50.0901L4.58109 49.9367C4.84795 50.3128 5.17574 50.4893 5.66324 50.4788C6.07298 50.4767 6.55417 50.4032 7.14883 50.296L9.67245 49.8422C10.3217 49.7245 10.3554 49.6488 10.3007 49.0437L10.5424 48.9995L10.9353 51.1639L10.6916 51.208Z" fill="#005D7F"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.4625 54.07L6.70204 54.0006C6.91427 54.5574 6.98571 54.6121 7.61609 54.4251L10.5158 53.5678C11.1462 53.3786 11.1777 53.2988 11.0538 52.7125L11.2912 52.6411L11.9216 54.7739L11.6841 54.8453C11.4698 54.2864 11.4026 54.2423 10.768 54.4293L7.87244 55.2866C7.24207 55.4715 7.20424 55.545 7.33032 56.1313L7.09288 56.2048L6.4625 54.07Z" fill="#005D7F"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1016 58.3981L12.0932 58.3855C11.4544 58.417 10.8177 58.4759 10.202 58.52L10.7336 59.6967L12.1016 58.3981ZM8.8509 60.6318L9.07784 60.5288C9.32999 60.9259 9.42455 60.9407 9.6788 60.699C9.87842 60.5162 10.1558 60.2451 10.4374 59.9678L9.80278 58.5599C9.5086 58.5851 9.18711 58.6124 8.86561 58.6524C8.43065 58.7049 8.35501 58.7827 8.53361 59.3206L8.30458 59.4235L7.60275 57.8623L7.82549 57.7614C8.09235 58.1943 8.20582 58.2573 8.91815 58.2216L13.2257 58.0283L13.4485 58.2994C12.4231 59.2996 11.3535 60.3166 10.3449 61.3273C9.82799 61.8358 9.78597 61.9682 9.94146 62.4431L9.71452 62.5439L8.8509 60.6318Z" fill="#005D7F"/>
@@ -946,7 +1012,7 @@
       <div class="exp-item">
         <div class="exp-period">2017 –<br>2021</div>
         <div style="display:flex; align-items:flex-start; gap:14px;">
-          <div style="flex-shrink:0; width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:6px; border:1px solid rgba(0,0,0,0.1); padding:3px;"><svg style="width:36px;height:36px;flex-shrink:0;"   viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div style="flex-shrink:0; width:56px; height:56px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:8px; border:1px solid rgba(0,0,0,0.1); padding:4px;"><svg style="width:48px;height:48px;flex-shrink:0;"   viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M40.5748 87.3889C37.9011 87.1911 34.8183 86.64 32.0779 85.8788C17.9295 81.9162 6.69219 71.1576 2.13477 57.2098C1.15945 54.2307 0.540156 51.2651 0.144571 47.7362C-0.0395808 46.1607 -0.0395808 41.2936 0.132294 39.9937C0.19777 39.4685 0.289164 38.6691 0.328723 38.2231C0.368281 37.777 0.421481 37.331 0.461039 37.2382C0.486957 37.1468 0.540156 36.8181 0.579715 36.5166C0.619273 36.2015 0.803425 35.2576 1.00122 34.4173C2.529 27.5805 5.28309 21.8731 9.72183 16.2708C10.9072 14.7881 14.5043 11.1664 16.0717 9.89372C19.1545 7.37426 23.2386 4.90799 26.8084 3.41158C29.8776 2.11297 34.5673 0.812996 37.6761 0.394221C38.2954 0.315104 39.1916 0.196428 39.6785 0.118676C40.8257 -0.0395585 47.0433 -0.0395585 48.1891 0.118676C48.6761 0.196428 49.5723 0.315104 50.1916 0.394221C50.8109 0.471974 51.8517 0.656126 52.4969 0.787078C53.1557 0.918031 53.8269 1.06262 54.0124 1.08854C54.4339 1.16766 56.8047 1.86334 58.1483 2.29576C61.4548 3.37202 65.8949 5.59003 68.7663 7.5966C70.9407 9.11892 71.8492 9.82825 73.7589 11.5729C80.2533 17.504 84.8257 25.3638 86.8541 34.1158C87.0383 34.877 87.2224 35.795 87.2756 36.1497C87.3411 36.5166 87.3943 36.8713 87.4066 36.9368C87.6317 38.0649 88 42.3031 88 43.7067C88 45.7406 87.6439 49.2708 87.1829 51.6975C85.4969 60.6869 81.1891 68.69 74.6292 75.0275C69.7935 79.7118 64.1953 83.1507 58.0965 85.1709C54.8813 86.2335 52.1149 86.8501 48.2818 87.3234C47.267 87.4407 41.9443 87.4939 40.5748 87.3889ZM48.0963 86.3385C57.3448 85.4205 65.9604 81.6147 72.9159 75.3563C82.0976 67.1022 87.3016 54.8472 86.8937 42.4477C86.5909 33 83.4289 24.4322 77.4747 16.927C75.8664 14.9054 72.1261 11.2715 70.0186 9.6973C59.9134 2.15253 47.6885 -0.642485 35.4635 1.78423C23.9493 4.06771 13.8059 11.0614 7.50928 21.0342C4.25457 26.1905 2.13477 32.1215 1.30404 38.3936C0.987577 40.834 0.90846 45.7542 1.17309 48.0241C2.87138 62.9294 11.5142 75.3958 24.7009 81.9694C29.628 84.4356 34.4486 85.8011 40.1792 86.3781C41.2732 86.4968 46.8591 86.4572 48.0963 86.3385Z" fill="#29448A"/>
 <path d="M40.9431 83.0716C40.7467 83.0321 40.4562 82.8875 40.3116 82.7702C40.0483 82.5342 39.8246 81.9299 39.9555 81.7989C40.1001 81.6543 40.5094 81.878 40.6403 82.1659C40.9036 82.7565 41.7343 82.6256 42.063 81.9435C42.3659 81.327 42.3536 81.1824 42.0371 81.3529C41.5229 81.6148 40.8381 81.5097 40.4302 81.1032C40.1138 80.7759 40.0483 80.6053 40.0483 80.0665C40.0483 79.5291 40.1138 79.3449 40.4302 79.0039C40.759 78.6629 40.9036 78.5974 41.4315 78.5974C41.958 78.5974 42.1162 78.6629 42.4982 79.0435C42.9197 79.4636 42.9456 79.5414 42.9456 80.368C42.9456 82.2845 42.1817 83.3212 40.9431 83.0716ZM42.0508 80.7363C42.1954 80.6053 42.2881 80.3421 42.2881 80.0665C42.2881 78.8334 40.8777 78.7802 40.628 80.0011C40.4698 80.7622 41.4574 81.2738 42.0508 80.7363Z" fill="#29448A"/>
 <path d="M44.9218 82.7961C44.9218 82.2586 45.3038 81.6407 45.844 81.2738C46.7006 80.6967 47.1617 80.2248 47.1617 79.9219C47.1617 79.5414 46.7006 79.1226 46.305 79.1226C46.1209 79.1226 45.8576 79.2399 45.7116 79.3845C45.567 79.5291 45.4484 79.791 45.4484 79.9751C45.4484 80.237 45.3829 80.3025 45.1196 80.3025C44.724 80.3025 44.6845 79.9751 44.9873 79.319C45.2383 78.8198 45.6598 78.5974 46.3841 78.5974C47.0566 78.5974 47.3717 78.7679 47.6227 79.2535C48.0442 80.0665 47.7278 80.6967 46.5028 81.4838C45.9367 81.8385 45.5807 82.2191 45.5807 82.4291C45.5807 82.4551 46.1209 82.4551 46.7661 82.4291C47.8723 82.3759 47.9515 82.3896 47.9515 82.6256C47.9515 82.8479 47.8328 82.9011 47.148 82.9802C46.7006 83.0184 46.0158 83.058 45.6339 83.058C45.001 83.058 44.9218 83.0321 44.9218 82.7961Z" fill="#29448A"/>
@@ -1029,6 +1095,51 @@
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- Awards -->
+<section id="awards">
+  <div class="container">
+    <div class="section-header">
+      <h2>Awards &amp; Honors</h2>
+    </div>
+    <div>
+      <div class="award-item">
+        <div class="award-year">2023</div>
+        <div>
+          <p class="award-name">🏆 National Scholarship</p>
+          <p class="award-org">Ministry of Education of the People's Republic of China</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visit tracker -->
+    <div class="visit-bar">
+      <div class="visit-stat">
+        <span class="v-val" id="vt-total">0</span>
+        <span class="v-label">Total visits</span>
+      </div>
+      <div class="visit-divider"></div>
+      <div class="visit-stat">
+        <span class="v-val" id="vt-today">0</span>
+        <span class="v-label">Today</span>
+      </div>
+      <div class="visit-divider"></div>
+      <div class="visit-stat">
+        <span class="v-val" id="vt-papers">0</span>
+        <span class="v-label">Paper clicks</span>
+      </div>
+      <div class="visit-divider"></div>
+      <div class="visit-stat">
+        <span class="v-val" id="vt-last" style="font-size:12px;line-height:1.4;">—</span>
+        <span class="v-label">Last visit</span>
+      </div>
+      <div style="flex:1; text-align:right; font-size:11px; color:var(--text-faint); font-family:var(--mono);">
+        powered by Cloudflare
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1234,6 +1345,47 @@
       if (countryCounts[i]) countryCounts[i].textContent = Math.round(totalNow * pct).toLocaleString();
     });
   }
+</script>
+
+<script>
+// ── Visit Tracker ──
+(function() {
+  const now      = new Date();
+  const todayKey = 'vt_day_' + now.toISOString().slice(0,10);
+  const totalKey = 'vt_total';
+  const lastKey  = 'vt_last';
+  const paperKey = 'vt_papers';
+
+  const total = parseInt(localStorage.getItem(totalKey) || '0') + 1;
+  const today = parseInt(localStorage.getItem(todayKey) || '0') + 1;
+  const prev  = localStorage.getItem(lastKey);
+  const papers= parseInt(localStorage.getItem(paperKey) || '0');
+
+  localStorage.setItem(totalKey, total);
+  localStorage.setItem(todayKey, today);
+  localStorage.setItem(lastKey, now.toISOString());
+
+  const $ = id => document.getElementById(id);
+  const fmt = n => n.toLocaleString();
+
+  if ($('vt-total'))  $('vt-total').textContent  = fmt(total);
+  if ($('vt-today'))  $('vt-today').textContent   = fmt(today);
+  if ($('vt-papers')) $('vt-papers').textContent  = fmt(papers);
+  if ($('vt-last')) {
+    $('vt-last').textContent = prev
+      ? new Date(prev).toLocaleDateString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
+      : 'First visit!';
+  }
+
+  // Track paper link clicks
+  document.querySelectorAll('.pub-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      const c = parseInt(localStorage.getItem(paperKey) || '0') + 1;
+      localStorage.setItem(paperKey, c);
+      if ($('vt-papers')) $('vt-papers').textContent = fmt(c);
+    });
+  });
+})();
 </script>
 </body>
 </html>
