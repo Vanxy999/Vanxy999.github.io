@@ -1150,263 +1150,99 @@
   </div>
 </footer>
 
+
+
+
 <script>
-// ── Visit Tracking (localStorage) ──
+// ── Visit Tracker (Global Counter via countapi.xyz) ──
+// countapi.xyz stores count on their server — persists across all browsers & devices.
+// 30-min cooldown per browser (localStorage) to avoid counting refreshes.
 (function() {
-  const now = new Date();
-  const todayKey = 'visits_' + now.toISOString().slice(0,10);
-  const totalKey = 'visits_total';
-  const lastKey  = 'visits_last';
-  const papersKey = 'visits_papers';
-
-  // Increment total
-  const total = parseInt(localStorage.getItem(totalKey) || '0') + 1;
-  localStorage.setItem(totalKey, total);
-
-  // Increment today
-  const today = parseInt(localStorage.getItem(todayKey) || '0') + 1;
-  localStorage.setItem(todayKey, today);
-
-  // Save last visit timestamp
-  const prev = localStorage.getItem(lastKey);
-  localStorage.setItem(lastKey, now.toISOString());
-
-  // Paper clicks counter (incremented on link click below)
-  const papers = parseInt(localStorage.getItem(papersKey) || '0');
-
-  // Render
-  function fmt(n) { return n.toLocaleString(); }
-
-  document.getElementById('stat-visits').textContent = fmt(total);
-  document.getElementById('stat-today').textContent  = fmt(today);
-  document.getElementById('stat-papers').textContent = fmt(papers);
-
-  if (prev) {
-    const d = new Date(prev);
-    const opts = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-    document.getElementById('stat-lastvisit').textContent = d.toLocaleDateString('en-US', opts);
-  } else {
-    document.getElementById('stat-lastvisit').textContent = 'First visit!';
-  }
-
-  // Track paper link clicks
-  document.querySelectorAll('.pub-links a').forEach(a => {
-    a.addEventListener('click', function() {
-      const c = parseInt(localStorage.getItem(papersKey) || '0') + 1;
-      localStorage.setItem(papersKey, c);
-      document.getElementById('stat-papers').textContent = fmt(c);
-    });
-  });
-
-  // Update daily chart with real data
-  window._realVisitData = { total, today };
-})();
-</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script>
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-
-  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
-  const gridColor = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
-  const tickColor = isDark ? '#5c5850' : '#a09e97';
-
-  // ── Build real visit history from localStorage ──
-  function getDailyHistory() {
-    const days = [];
-    const counts = [];
-    const now = new Date();
-    for (let i = 29; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(d.getDate() - i);
-      const key = 'visits_' + d.toISOString().slice(0, 10);
-      const label = (d.getMonth() + 1) + '/' + d.getDate();
-      days.push(label);
-      counts.push(parseInt(localStorage.getItem(key) || '0'));
-    }
-    return { days, counts };
-  }
-
-  const { days, counts } = getDailyHistory();
-  // unique approximated as ~65% of visits
-  const uniq = counts.map(v => Math.round(v * 0.65));
-
-  const lineChart = new Chart(document.getElementById('analyticsLine'), {
-    type: 'line',
-    data: {
-      labels: days,
-      datasets: [
-        {
-          label: 'Visits',
-          data: counts,
-          borderColor: '#2a5f8f',
-          backgroundColor: 'rgba(42,95,143,0.07)',
-          borderWidth: 1.5,
-          pointRadius: 0,
-          fill: true,
-          tension: 0.4,
-        },
-        {
-          label: 'Unique',
-          data: uniq,
-          borderColor: '#1D9E75',
-          backgroundColor: 'rgba(29,158,117,0.05)',
-          borderWidth: 1.5,
-          pointRadius: 0,
-          fill: true,
-          tension: 0.4,
-          borderDash: [5, 3],
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
-      scales: {
-        x: {
-          ticks: { color: tickColor, font: { size: 10 }, maxTicksLimit: 8, autoSkip: true },
-          grid: { color: gridColor },
-          border: { display: false }
-        },
-        y: {
-          min: 0,
-          ticks: { color: tickColor, font: { size: 10 }, maxTicksLimit: 5, precision: 0 },
-          grid: { color: gridColor },
-          border: { display: false }
-        }
-      }
-    }
-  });
-
-  // ── Paper click source tracking ──
-  // Track which paper link type was clicked
-  const sourceKeys = { 'Google Scholar': 'src_scholar', 'Direct': 'src_direct', 'GitHub': 'src_github', 'arXiv': 'src_arxiv', 'DOI': 'src_doi' };
-  function getSourceData() {
-    return [
-      parseInt(localStorage.getItem('src_scholar') || '0'),
-      parseInt(localStorage.getItem('src_direct') || '0'),
-      parseInt(localStorage.getItem('src_arxiv') || '0'),
-      parseInt(localStorage.getItem('src_github') || '0'),
-    ];
-  }
-
-  const doughnut = new Chart(document.getElementById('analyticsDoughnut'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Google Scholar', 'Direct', 'arXiv', 'GitHub'],
-      datasets: [{
-        data: getSourceData(),
-        backgroundColor: ['#2a5f8f', '#1D9E75', '#D85A30', '#888780'],
-        borderWidth: 0,
-        hoverOffset: 4
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: '68%',
-      plugins: { legend: { display: false } }
-    }
-  });
-
-  // Track paper link clicks and update doughnut
-  document.querySelectorAll('.pub-links a').forEach(a => {
-    a.addEventListener('click', function() {
-      const href = this.getAttribute('href') || '';
-      let srcKey = 'src_direct';
-      if (href.includes('arxiv')) srcKey = 'src_arxiv';
-      else if (href.includes('github')) srcKey = 'src_github';
-      else if (href.includes('scholar.google')) srcKey = 'src_scholar';
-      const c = parseInt(localStorage.getItem(srcKey) || '0') + 1;
-      localStorage.setItem(srcKey, c);
-      // refresh doughnut
-      doughnut.data.datasets[0].data = getSourceData();
-      doughnut.update();
-    });
-  });
-
-  // Update bar chart top countries section with visit count
-  const totalNow = parseInt(localStorage.getItem('visits_total') || '0');
-  // Proportionally scale country bars to actual total
-  if (totalNow > 0) {
-    const countryPcts = [0.38, 0.28, 0.14, 0.11, 0.09];
-    const countryBars = document.querySelectorAll('.bar-fill');
-    const countryCounts = document.querySelectorAll('.bar-count');
-    const maxPct = countryPcts[0];
-    countryPcts.forEach((pct, i) => {
-      if (countryBars[i]) countryBars[i].style.width = (pct / maxPct * 100) + '%';
-      if (countryCounts[i]) countryCounts[i].textContent = Math.round(totalNow * pct).toLocaleString();
-    });
-  }
-</script>
-
-<script>
-// ── Visit Tracker ──
-// Strategy: 30-minute cooldown.
-// Refresh / re-open within 30 min → NOT counted. New visit after 30 min → +1.
-(function() {
-  const COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
-  const now = new Date();
-
-  // Keys (migrate from old key names if they exist)
-  const totalKey = 'vt_total';
-  const todayKey = 'vt_day_' + now.toISOString().slice(0, 10);
-  const lastKey  = 'vt_last';
-  const paperKey = 'vt_papers';
-
-  // Migrate old keys from previous version
-  if (!localStorage.getItem(totalKey) && localStorage.getItem('visits_total')) {
-    localStorage.setItem(totalKey, localStorage.getItem('visits_total'));
-  }
-  if (!localStorage.getItem(lastKey) && localStorage.getItem('visits_last')) {
-    localStorage.setItem(lastKey, localStorage.getItem('visits_last'));
-  }
-  if (!localStorage.getItem(paperKey) && localStorage.getItem('visits_papers')) {
-    localStorage.setItem(paperKey, localStorage.getItem('visits_papers'));
-  }
-
-  const lastVisit = localStorage.getItem(lastKey);
-  const lastTime  = lastVisit ? new Date(lastVisit).getTime() : 0;
-  const isNewVisit = (now.getTime() - lastTime) > COOLDOWN_MS;
-
-  let total  = parseInt(localStorage.getItem(totalKey) || '0');
-  let today  = parseInt(localStorage.getItem(todayKey) || '0');
-  const papers = parseInt(localStorage.getItem(paperKey) || '0');
-
-  if (isNewVisit) {
-    total += 1;
-    today += 1;
-    localStorage.setItem(totalKey, total);
-    localStorage.setItem(todayKey, today);
-    localStorage.setItem(lastKey, now.toISOString());
-  }
+  const NAMESPACE  = 'vanxy999.github.io';
+  const KEY_TOTAL  = 'page-visits';
+  const KEY_PAPERS = 'paper-clicks';
+  const COOLDOWN_MS = 30 * 60 * 1000;
+  const LS_LAST    = 'vt_last_counted';
+  const LS_PAPERS  = 'vt_papers_local';
 
   const $ = id => document.getElementById(id);
-  const fmt = n => n.toLocaleString();
+  const fmt = n => (n || 0).toLocaleString();
 
-  if ($('vt-total'))  $('vt-total').textContent  = fmt(total);
-  if ($('vt-today'))  $('vt-today').textContent   = fmt(today);
-  if ($('vt-papers')) $('vt-papers').textContent  = fmt(papers);
-  if ($('vt-last') && lastVisit) {
-    $('vt-last').textContent = new Date(lastVisit).toLocaleDateString('en-US',
+  const lastCounted = localStorage.getItem(LS_LAST);
+  const shouldCount = !lastCounted || (Date.now() - new Date(lastCounted).getTime()) > COOLDOWN_MS;
+
+  // ── Total visits ──
+  if (shouldCount) {
+    // Increment global counter
+    fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY_TOTAL}`)
+      .then(r => r.json())
+      .then(data => {
+        localStorage.setItem(LS_LAST, new Date().toISOString());
+        if ($('vt-total')) $('vt-total').textContent = fmt(data.value);
+      })
+      .catch(() => {
+        // API unavailable — show localStorage fallback
+        const local = parseInt(localStorage.getItem('vt_total') || '0') + 1;
+        localStorage.setItem('vt_total', local);
+        localStorage.setItem(LS_LAST, new Date().toISOString());
+        if ($('vt-total')) $('vt-total').textContent = fmt(local);
+      });
+  } else {
+    // Just read current value without incrementing
+    fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY_TOTAL}`)
+      .then(r => r.json())
+      .then(data => {
+        if ($('vt-total')) $('vt-total').textContent = fmt(data.value);
+      })
+      .catch(() => {
+        const local = parseInt(localStorage.getItem('vt_total') || '0');
+        if ($('vt-total')) $('vt-total').textContent = fmt(local);
+      });
+  }
+
+  // ── Today's visits (localStorage, resets each day) ──
+  const todayKey = 'vt_day_' + new Date().toISOString().slice(0, 10);
+  if (shouldCount) {
+    const today = parseInt(localStorage.getItem(todayKey) || '0') + 1;
+    localStorage.setItem(todayKey, today);
+    if ($('vt-today')) $('vt-today').textContent = fmt(today);
+  } else {
+    const today = parseInt(localStorage.getItem(todayKey) || '0');
+    if ($('vt-today')) $('vt-today').textContent = fmt(today);
+  }
+
+  // ── Paper clicks (global counter) ──
+  fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY_PAPERS}`)
+    .then(r => r.json())
+    .then(data => {
+      if ($('vt-papers')) $('vt-papers').textContent = fmt(data.value);
+    })
+    .catch(() => {
+      const p = parseInt(localStorage.getItem(LS_PAPERS) || '0');
+      if ($('vt-papers')) $('vt-papers').textContent = fmt(p);
+    });
+
+  // ── Last visit time ──
+  if ($('vt-last') && lastCounted) {
+    $('vt-last').textContent = new Date(lastCounted).toLocaleDateString('en-US',
       {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
-  } else if ($('vt-last') && !lastVisit) {
+  } else if ($('vt-last') && !lastCounted) {
     $('vt-last').textContent = 'First visit!';
   }
 
-  // Track paper link clicks
+  // ── Track paper link clicks (global) ──
   document.querySelectorAll('.pub-links a').forEach(a => {
     a.addEventListener('click', () => {
-      const c = parseInt(localStorage.getItem(paperKey) || '0') + 1;
-      localStorage.setItem(paperKey, c);
-      if ($('vt-papers')) $('vt-papers').textContent = fmt(c);
+      fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY_PAPERS}`)
+        .then(r => r.json())
+        .then(data => {
+          if ($('vt-papers')) $('vt-papers').textContent = fmt(data.value);
+        })
+        .catch(() => {
+          const c = parseInt(localStorage.getItem(LS_PAPERS) || '0') + 1;
+          localStorage.setItem(LS_PAPERS, c);
+          if ($('vt-papers')) $('vt-papers').textContent = fmt(c);
+        });
     });
   });
 })();
