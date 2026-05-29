@@ -1154,95 +1154,80 @@
 
 
 <script>
-// ── Visit Tracker (Global Counter via countapi.xyz) ──
-// countapi.xyz stores count on their server — persists across all browsers & devices.
-// 30-min cooldown per browser (localStorage) to avoid counting refreshes.
+// ── Visit Tracker ──
+// All metrics global via countapi.xyz, 30-min cooldown per browser
 (function() {
-  const NAMESPACE  = 'vanxy999.github.io';
-  const KEY_TOTAL  = 'page-visits';
-  const KEY_PAPERS = 'paper-clicks';
-  const COOLDOWN_MS = 30 * 60 * 1000;
-  const LS_LAST    = 'vt_last_counted';
-  const LS_PAPERS  = 'vt_papers_local';
+  const NS       = 'vanxy999.github.io';
+  const COOLDOWN = 30 * 60 * 1000;
+  const LS_LAST  = 'vt_last';
+  const SS_PAPERS = 'vt_clicked';
 
   const $ = id => document.getElementById(id);
   const fmt = n => (n || 0).toLocaleString();
 
+  const todayStr   = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const KEY_TOTAL  = 'visits-total';
+  const KEY_TODAY  = 'visits-today-' + todayStr;
+  const KEY_PAPERS = 'visits-papers';
+  const KEY_LAST   = 'visits-last-ts'; // unix timestamp in seconds
+
   const lastCounted = localStorage.getItem(LS_LAST);
-  const shouldCount = !lastCounted || (Date.now() - new Date(lastCounted).getTime()) > COOLDOWN_MS;
+  const shouldCount = !lastCounted ||
+    (Date.now() - new Date(lastCounted).getTime()) > COOLDOWN;
 
-  // ── Total visits ──
+  const hit = k => fetch(`https://api.countapi.xyz/hit/${NS}/${k}`).then(r => r.json());
+  const get = k => fetch(`https://api.countapi.xyz/get/${NS}/${k}`).then(r => r.json());
+  const set = (k, v) => fetch(`https://api.countapi.xyz/set/${NS}/${k}?value=${v}`).then(r => r.json());
+
+  const fmtTs = ts => ts
+    ? new Date(ts * 1000).toLocaleDateString('en-US',
+        {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})
+    : '—';
+
   if (shouldCount) {
-    // Increment global counter
-    fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY_TOTAL}`)
-      .then(r => r.json())
-      .then(data => {
-        localStorage.setItem(LS_LAST, new Date().toISOString());
-        if ($('vt-total')) $('vt-total').textContent = fmt(data.value);
-      })
-      .catch(() => {
-        // API unavailable — show localStorage fallback
-        const local = parseInt(localStorage.getItem('vt_total') || '0') + 1;
-        localStorage.setItem('vt_total', local);
-        localStorage.setItem(LS_LAST, new Date().toISOString());
-        if ($('vt-total')) $('vt-total').textContent = fmt(local);
+    const nowTs = Math.floor(Date.now() / 1000);
+    localStorage.setItem(LS_LAST, new Date().toISOString());
+
+    // Read last-visit FIRST (to show previous visitor's time), then update
+    get(KEY_LAST).then(data => {
+      if ($('vt-last')) $('vt-last').textContent = fmtTs(data.value);
+    }).catch(() => {});
+
+    // Increment total + today, set last-visit timestamp
+    Promise.allSettled([hit(KEY_TOTAL), hit(KEY_TODAY), set(KEY_LAST, nowTs)])
+      .then(([total, today]) => {
+        if ($('vt-total') && total.status === 'fulfilled')
+          $('vt-total').textContent = fmt(total.value.value);
+        if ($('vt-today') && today.status === 'fulfilled')
+          $('vt-today').textContent = fmt(today.value.value);
       });
   } else {
-    // Just read current value without incrementing
-    fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY_TOTAL}`)
-      .then(r => r.json())
-      .then(data => {
-        if ($('vt-total')) $('vt-total').textContent = fmt(data.value);
-      })
-      .catch(() => {
-        const local = parseInt(localStorage.getItem('vt_total') || '0');
-        if ($('vt-total')) $('vt-total').textContent = fmt(local);
+    Promise.allSettled([get(KEY_TOTAL), get(KEY_TODAY), get(KEY_LAST)])
+      .then(([total, today, last]) => {
+        if ($('vt-total') && total.status === 'fulfilled')
+          $('vt-total').textContent = fmt(total.value.value);
+        if ($('vt-today') && today.status === 'fulfilled')
+          $('vt-today').textContent = fmt(today.value.value);
+        if ($('vt-last') && last.status === 'fulfilled')
+          $('vt-last').textContent = fmtTs(last.value.value);
       });
   }
 
-  // ── Today's visits (localStorage, resets each day) ──
-  const todayKey = 'vt_day_' + new Date().toISOString().slice(0, 10);
-  if (shouldCount) {
-    const today = parseInt(localStorage.getItem(todayKey) || '0') + 1;
-    localStorage.setItem(todayKey, today);
-    if ($('vt-today')) $('vt-today').textContent = fmt(today);
-  } else {
-    const today = parseInt(localStorage.getItem(todayKey) || '0');
-    if ($('vt-today')) $('vt-today').textContent = fmt(today);
-  }
+  // Paper clicks: read on load
+  get(KEY_PAPERS).then(data => {
+    if ($('vt-papers')) $('vt-papers').textContent = fmt(data.value);
+  }).catch(() => {});
 
-  // ── Paper clicks (global counter) ──
-  fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY_PAPERS}`)
-    .then(r => r.json())
-    .then(data => {
-      if ($('vt-papers')) $('vt-papers').textContent = fmt(data.value);
-    })
-    .catch(() => {
-      const p = parseInt(localStorage.getItem(LS_PAPERS) || '0');
-      if ($('vt-papers')) $('vt-papers').textContent = fmt(p);
-    });
-
-  // ── Last visit time ──
-  if ($('vt-last') && lastCounted) {
-    $('vt-last').textContent = new Date(lastCounted).toLocaleDateString('en-US',
-      {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
-  } else if ($('vt-last') && !lastCounted) {
-    $('vt-last').textContent = 'First visit!';
-  }
-
-  // ── Track paper link clicks (global) ──
-  document.querySelectorAll('.pub-links a').forEach(a => {
+  // Paper clicks: once per link per session
+  const clicked = new Set(JSON.parse(sessionStorage.getItem(SS_PAPERS) || '[]'));
+  document.querySelectorAll('.pub-links a').forEach((a, i) => {
     a.addEventListener('click', () => {
-      fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY_PAPERS}`)
-        .then(r => r.json())
-        .then(data => {
-          if ($('vt-papers')) $('vt-papers').textContent = fmt(data.value);
-        })
-        .catch(() => {
-          const c = parseInt(localStorage.getItem(LS_PAPERS) || '0') + 1;
-          localStorage.setItem(LS_PAPERS, c);
-          if ($('vt-papers')) $('vt-papers').textContent = fmt(c);
-        });
+      if (clicked.has(i)) return;
+      clicked.add(i);
+      sessionStorage.setItem(SS_PAPERS, JSON.stringify([...clicked]));
+      hit(KEY_PAPERS).then(data => {
+        if ($('vt-papers')) $('vt-papers').textContent = fmt(data.value);
+      }).catch(() => {});
     });
   });
 })();
