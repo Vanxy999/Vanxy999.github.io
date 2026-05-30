@@ -650,23 +650,6 @@
   }
 
   /* ── Visit tracker ── */
-  .visit-bar {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    background: var(--tag-bg);
-    border-radius: var(--radius);
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-  }
-  .visit-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    min-width: 64px;
-  }
   .visit-stat .v-val {
     font-size: 20px;
     font-weight: 600;
@@ -679,12 +662,6 @@
     color: var(--text-faint);
     letter-spacing: 0.03em;
     text-align: center;
-  }
-  .visit-divider {
-    width: 1px;
-    height: 32px;
-    background: var(--border-strong);
-    flex-shrink: 0;
   }
 
   /* ── Responsive ── */
@@ -1114,31 +1091,7 @@
       </div>
     </div>
 
-    <!-- Visit tracker -->
-    <div class="visit-bar">
-      <div class="visit-stat">
-        <span class="v-val" id="vt-total">0</span>
-        <span class="v-label">Total visits</span>
-      </div>
-      <div class="visit-divider"></div>
-      <div class="visit-stat">
-        <span class="v-val" id="vt-today">0</span>
-        <span class="v-label">Today</span>
-      </div>
-      <div class="visit-divider"></div>
-      <div class="visit-stat">
-        <span class="v-val" id="vt-papers">0</span>
-        <span class="v-label">Paper clicks</span>
-      </div>
-      <div class="visit-divider"></div>
-      <div class="visit-stat">
-        <span class="v-val" id="vt-last" style="font-size:12px;line-height:1.4;">—</span>
-        <span class="v-label">Last visit</span>
-      </div>
-      <div style="flex:1; text-align:right; font-size:11px; color:var(--text-faint); font-family:var(--mono);">
-        powered by Cloudflare
-      </div>
-    </div>
+    
 
   </div>
 </section>
@@ -1153,84 +1106,6 @@
 
 
 
-<script>
-// ── Visit Tracker ──
-// All metrics global via countapi.xyz, 30-min cooldown per browser
-(function() {
-  const NS       = 'vanxy999.github.io';
-  const COOLDOWN = 30 * 60 * 1000;
-  const LS_LAST  = 'vt_last';
-  const SS_PAPERS = 'vt_clicked';
 
-  const $ = id => document.getElementById(id);
-  const fmt = n => (n || 0).toLocaleString();
-
-  const todayStr   = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-  const KEY_TOTAL  = 'visits-total';
-  const KEY_TODAY  = 'visits-today-' + todayStr;
-  const KEY_PAPERS = 'visits-papers';
-  const KEY_LAST   = 'visits-last-ts'; // unix timestamp in seconds
-
-  const lastCounted = localStorage.getItem(LS_LAST);
-  const shouldCount = !lastCounted ||
-    (Date.now() - new Date(lastCounted).getTime()) > COOLDOWN;
-
-  const hit = k => fetch(`https://api.countapi.xyz/hit/${NS}/${k}`).then(r => r.json());
-  const get = k => fetch(`https://api.countapi.xyz/get/${NS}/${k}`).then(r => r.json());
-  const set = (k, v) => fetch(`https://api.countapi.xyz/set/${NS}/${k}?value=${v}`).then(r => r.json());
-
-  const fmtTs = ts => ts
-    ? new Date(ts * 1000).toLocaleDateString('en-US',
-        {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})
-    : '—';
-
-  if (shouldCount) {
-    const nowTs = Math.floor(Date.now() / 1000);
-    localStorage.setItem(LS_LAST, new Date().toISOString());
-
-    // Read last-visit FIRST (to show previous visitor's time), then update
-    get(KEY_LAST).then(data => {
-      if ($('vt-last')) $('vt-last').textContent = fmtTs(data.value);
-    }).catch(() => {});
-
-    // Increment total + today, set last-visit timestamp
-    Promise.allSettled([hit(KEY_TOTAL), hit(KEY_TODAY), set(KEY_LAST, nowTs)])
-      .then(([total, today]) => {
-        if ($('vt-total') && total.status === 'fulfilled')
-          $('vt-total').textContent = fmt(total.value.value);
-        if ($('vt-today') && today.status === 'fulfilled')
-          $('vt-today').textContent = fmt(today.value.value);
-      });
-  } else {
-    Promise.allSettled([get(KEY_TOTAL), get(KEY_TODAY), get(KEY_LAST)])
-      .then(([total, today, last]) => {
-        if ($('vt-total') && total.status === 'fulfilled')
-          $('vt-total').textContent = fmt(total.value.value);
-        if ($('vt-today') && today.status === 'fulfilled')
-          $('vt-today').textContent = fmt(today.value.value);
-        if ($('vt-last') && last.status === 'fulfilled')
-          $('vt-last').textContent = fmtTs(last.value.value);
-      });
-  }
-
-  // Paper clicks: read on load
-  get(KEY_PAPERS).then(data => {
-    if ($('vt-papers')) $('vt-papers').textContent = fmt(data.value);
-  }).catch(() => {});
-
-  // Paper clicks: once per link per session
-  const clicked = new Set(JSON.parse(sessionStorage.getItem(SS_PAPERS) || '[]'));
-  document.querySelectorAll('.pub-links a').forEach((a, i) => {
-    a.addEventListener('click', () => {
-      if (clicked.has(i)) return;
-      clicked.add(i);
-      sessionStorage.setItem(SS_PAPERS, JSON.stringify([...clicked]));
-      hit(KEY_PAPERS).then(data => {
-        if ($('vt-papers')) $('vt-papers').textContent = fmt(data.value);
-      }).catch(() => {});
-    });
-  });
-})();
-</script>
 </body>
 </html>
